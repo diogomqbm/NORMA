@@ -1,3 +1,4 @@
 open V1
 
-let () = Register.initialize 2
+let test : Register.t = Register.make ~register_number:1 ~n:5
+let () = Operations.initialize test
