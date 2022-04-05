@@ -1,5 +1,5 @@
 type init = Init of int
-type t = Sub of init * init | Add of init * init
+type t = Sub of init * init | Add of init * init | Mult of init * init
 
 exception Operator_Not_Supported
 
@@ -23,9 +23,10 @@ let parse expression =
   match operator with
   | '+' -> Add (Init (int_of_string fst), Init (int_of_string snd))
   | '-' -> Sub (Init (int_of_string fst), Init (int_of_string snd))
+  | '*' -> Mult (Init (int_of_string fst), Init (int_of_string snd))
   | _ -> raise Operator_Not_Supported
 
-let rec run exp ~registers_count =
+let run exp ~registers_count =
   match exp with
   | Add (Init n1, Init n2) ->
       let register1 =
@@ -47,4 +48,13 @@ let rec run exp ~registers_count =
         |> Operations.initialize
       in
       Operations.sub register1 register2
-  | _ -> raise Operator_Not_Supported
+  | Mult (Init n1, Init n2) ->
+      let register1 =
+        Register.make ~register_number:(registers_count + 1) ~n:n1
+        |> Operations.initialize
+      in
+      let register2 =
+        Register.make ~register_number:(registers_count + 2) ~n:n2
+        |> Operations.initialize
+      in
+      Operations.mult register1 register2
