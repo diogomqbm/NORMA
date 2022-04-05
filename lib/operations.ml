@@ -11,7 +11,7 @@ let initialize register =
 let sum reg1 reg2 =
   let new_reg1 = ref reg1 in
   let new_reg2 = ref reg2 in
-  while snd new_reg2.contents.value > 0 do
+  while not (is_zero new_reg2.contents) do
     new_reg1 := ( ++ ) new_reg1.contents;
     new_reg2 := ( -- ) new_reg2.contents;
     print new_reg1.contents "+" "Soma";
@@ -22,7 +22,7 @@ let sum reg1 reg2 =
 let sub reg1 reg2 =
   let new_reg1 = ref reg1 in
   let new_reg2 = ref reg2 in
-  while snd new_reg2.contents.value > 0 do
+  while not (is_zero new_reg2.contents) do
     new_reg1 := ( -- ) new_reg1.contents;
     new_reg2 := ( -- ) new_reg2.contents;
     print new_reg1.contents "-" "Subtrai";
@@ -33,7 +33,7 @@ let sub reg1 reg2 =
 let sum_using reg1 reg2 letter operator =
   let reg_temp = ref (make ~register_number:0 ~n:0) in
   let operation = Format.sprintf "AB_usando_%s" letter in
-  while snd reg2.contents.value > 0 do
+  while not (is_zero reg2.contents) do
     reg1 := ( ++ ) reg1.contents;
     reg_temp := ( ++ ) reg_temp.contents;
     reg2 := ( -- ) reg2.contents;
@@ -41,7 +41,7 @@ let sum_using reg1 reg2 letter operator =
     print reg2.contents operator operation;
     simple_print reg_temp.contents operation letter;
   done;
-  while snd reg_temp.contents.value > 0 do
+  while not (is_zero reg_temp.contents) do
     reg2 := ( ++ ) reg2.contents;
     reg_temp := ( -- ) reg_temp.contents;
     print reg2.contents operator operation;
@@ -52,13 +52,13 @@ let mult reg1 reg2 =
   let reg_temp = ref (make ~register_number:0 ~n:0) in
   let new_reg1 = ref reg1 in
   let new_reg2 = ref reg2 in
-  while snd new_reg1.contents.value > 0 do
+  while not (is_zero new_reg1.contents) do
     reg_temp := ( ++ ) reg_temp.contents;
     new_reg1 := ( -- ) new_reg1.contents;
     print new_reg1.contents "*" "Multiplica";
     simple_print reg_temp.contents "Multiplica" "C"
   done;
-  while snd reg_temp.contents.value > 0 do
+  while not (is_zero reg_temp.contents) do
     sum_using new_reg1 new_reg2 "D" "*";
     reg_temp := ( -- ) reg_temp.contents;
     print new_reg1.contents "*" "Multiplica";

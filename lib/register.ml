@@ -16,6 +16,11 @@ let print_result t =
 
 let set_value register value = { register with value }
 
+let is_zero register =
+  match register.value with
+  | (0,0) -> true
+  | _ -> false
+
 let ( ++ ) register =
   let new_value =
     match register.value with
